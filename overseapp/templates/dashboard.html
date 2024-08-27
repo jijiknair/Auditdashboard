@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Dashboard</h2>
+    <a href="{% url 'manage_office_create' %}">Add New Office</a>
+    <ul>
+        {% for office in offices %}
+            <li>
+                {{ office.name }}
+                <a href="{% url 'manage_office' office.id %}">Edit</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
