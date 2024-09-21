@@ -1,0 +1,23 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with Assistant</title>
+</head>
+<body>
+    <h1>Chat with Virtual Assistant</h1>
+    <div id="chat-box">
+        {% for message in messages %}
+            <div class="{{ 'assistant-message' if message.is_assistant else 'user-message' }}">
+                <p>{{ message.message }}</p>
+                <small>{{ message.created_at }}</small>
+            </div>
+        {% endfor %}
+    </div>
+    <form method="post" action="{% url 'chat' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>

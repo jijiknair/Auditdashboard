@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .tile {
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            margin: 10px;
+            text-align: center;
+            vertical-align: middle;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .tile img {
+            width: 60px;
+            height: 60px;
+            margin-top: 20px;
+        }
+        .tile p {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Analytics Dashboard</h1>
+
+    <!-- Customer Satisfaction Tiles -->
+    <div id="customerSatisfaction">
+        <div class="tile">
+            <img src="happy.png" alt="Happy Smiley">
+            <p>Happy: {{ happy_customers }}</p>
+        </div>
+        <div class="tile">
+            <img src="neutral.png" alt="Neutral Smiley">
+            <p>Neutral: {{ neutral_customers }}</p>
+        </div>
+        <div class="tile">
+            <img src="sad.png" alt="Sad Smiley">
+            <p>Sad: {{ sad_customers }}</p>
+        </div>
+    </div>
+
+    <!-- Simple Chart: Customer Satisfaction (Donut Chart) -->
+    <canvas id="customerSatisfactionChart" width="400" height="200"></canvas>
+
+    <!-- Page Views Bar Chart -->
+    <canvas id="pageViewsChart" width="400" height="200"></canvas>
+
+    <!-- Unique Users Pie Chart -->
+    <canvas id="uniqueUsersChart" width="400" height="200"></canvas>
+
+    <!-- Average Time Spent Line Chart -->
+    <canvas id="avgTimeSpentChart" width="400" height="200"></canvas>
+
+    <script>
+        // Get data from Django context
+        const pageNames = JSON.parse('{{ page_names|safe }}');
+        const pageViews = JSON.parse('{{ page_views|safe }}');
+        const uniqueUsers = JSON.parse('{{ unique_users|safe }}');
+        const avgTimeSpent = JSON.parse('{{ avg_time_spent|safe }}');
+        const happyCustomers = {{ happy_customers }};
+        const neutralCustomers = {{ neutral_customers }};
+        const sadCustomers = {{ sad_customers }};
+
+        // Customer Satisfaction Chart (Donut)
+        var ctx4 = document.getElementById('customerSatisfactionChart').getContext('2d');
+        var customerSatisfactionChart = new Chart(ctx4, {
+            type: 'doughnut',
+            data: {
+                labels: ['Happy', 'Neutral', 'Sad'],
+                datasets: [{
+                    data: [happyCustomers, neutralCustomers, sadCustomers],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Page Views Chart (Bar)
+        var ctx1 = document.getElementById('pageViewsChart').getContext('2d');
+        var pageViewsChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: pageNames,
+                datasets: [{
+                    label: 'Page Views',
+                    data: pageViews,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Unique Users Chart (Pie)
+        var ctx2 = document.getElementById('uniqueUsersChart').getContext('2d');
+        var uniqueUsersChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: pageNames,
+                datasets: [{
+                    label: 'Unique Users',
+                    data: uniqueUsers,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Average Time Spent Chart (Line)
+        var ctx3 = document.getElementById('avgTimeSpentChart').getContext('2d');
+        var avgTimeSpentChart = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: pageNames,
+                datasets: [{
+                    label: 'Avg Time Spent (seconds)',
+                    data: avgTimeSpent,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
