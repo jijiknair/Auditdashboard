@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IPC Program Elements</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #e6f7ff;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center; /* Centering the heading */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .scoring-dropdown select, .input-box input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .scoring-dropdown select {
+            transition: background-color 0.3s ease;
+        }
+
+        /* Increase width of Scoring column */
+        th.scoring-column {
+            width: 180px; /* Adjust width as necessary */
+        }
+        /* Style for comments input box */
+        .comments-input input {
+            width: 95%; /* Increase the width */
+            height: 40px; /* Increase the height */
+            padding: 10px; /* Increase padding for larger appearance */
+            box-sizing: border-box;
+            font-size: 16px; /* Increase font size for better visibility */
+        }
+        /* Style the next button */
+        .next-button {
+            display: block;
+            width: 100px;
+            padding: 10px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .next-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Infection Prevention and Control Program</h1>
+      <!-- Form wrapping the table -->
+  <form action="{% url 'IPCT' %}" method="get">
+    <table>
+        <thead>
+            <tr>
+                <th>Ref No</th>
+                <th>Elements</th>
+                <th colspan="3">Activities</th>
+                <th class="scoring-column">Scoring</th> <!-- Apply class to increase width -->
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>D</th>
+                <th>SI</th>
+                <th>O</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example Rows -->
+            <tr>
+                <td>1.1</td>
+                <td>At least one infection control focal point trained in IPC is available to manage the facility infection control program</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <tr>
+                <td>1.2</td>
+                <td>The Infection control focal point is up to date with the current national guidelines and implemented in the facility</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <tr>
+                <td>1.3</td>
+                <td>Updated GCC infection prevention and control manual is available and accessible for all HCWs </td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>1.4</td>
+                <td>Facility has system for early detection and management of potentially infectious persons at initial points of patient encounter (e.g. respiratory infectious patients)</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>1.5</td>
+                <td>IPC annual action plan is written according to risk assessment and implemented</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>1.6</td>
+                <td>There is documented IPC meeting with the facility incharge/ head to discuss IPC issues and risk assessment at least bio-annually</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>1.7</td>
+                <td>Report to IPC section in DGHS for any; communicable diseases, infectious exposure, healthcare-associated infection (HAI), inoculation injury and audit result</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+        <tr>
+            <td>Comments</td>
+            <td class="comments-input"><input type="text" placeholder="Enter comments"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="comments-input"><input type="text" placeholder="Enter comments"></td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- Add the Next button -->
+        <button type="submit" class="next-button">Next</button>
+    </form>
+
+    <script>
+        function changeColor(selectElement) {
+            var selectedValue = selectElement.value;
+
+            // Apply color based on the selected value
+            if (selectedValue === "NA") {
+                selectElement.style.backgroundColor = "white";
+            } else if (selectedValue === "Partially Met") {
+                selectElement.style.backgroundColor = "yellow";
+            } else if (selectedValue === "Met") {
+                selectElement.style.backgroundColor = "green";
+            } else if (selectedValue === "Not Met") {
+                selectElement.style.backgroundColor = "red";
+            }
+        }
+    </script>
+</body>
+</html>

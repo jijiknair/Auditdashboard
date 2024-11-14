@@ -1,10 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Category Form</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffecd2);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+        /* Centering container with box shadow */
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        /* Heading color and alignment */
+        /* Heading color and alignment */
+        h1 {
+    color: #1565c0;
+    text-align: center;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+    font-size: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #1565c0, #42a5f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, letter-spacing 0.2s;
+}
+
+h1:hover {
+    transform: scale(1.1);
+    letter-spacing: 4px;
+}
+        /* Form group alignment and label styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #1e88e5;
+        }
+        /* Styling the select input and text input */
+        select, input[type="text"] {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: 1px solid #90caf9;
+            border-radius: 8px;
+            background-color: #e3f2fd;
+            color: #333;
+            box-sizing: border-box;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .button-center {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .prev-next-button,
+        .proceed-button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .prev-next-button {
+            background-color: #81d4fa;
+            color: #fff;
+        }
+
+        .prev-next-button:hover {
+            background-color: #039be5;
+            transform: translateY(-2px);
+        }
+
+        .proceed-button {
+            background-color: #66BB6A; /* Blue color */
+            color: white;
+        }
+        .proceed-button:hover {
+            background-color: #1E88E5; /* Darker blue on hover */
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
-$END$
+    <div class="container">
+        <h1>Professional Category Form</h1>
+        <div class="form-group">
+            <label for="profCat">Prof.Cat:</label>
+            <select id="profCat" onchange="updateSubCat()">
+                <option value="">Select a profession</option>
+                <option value="Nurse/Midwife">Nurse/Midwife</option>
+                <option value="Auxiliary">Auxiliary</option>
+                <option value="Medical Doctor">Medical Doctor</option>
+                <option value="Other Health Care Worker">Other Health Care Worker</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="subCat">Sub. Cat:</label>
+            <select id="subCat">
+                <option value="">Please select a sub-category</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="additionalInfo">Code:</label>
+            <input type="text" id="additionalInfo" placeholder="Enter additional information here" />
+        </div>
+
+    <div class="button-group">
+            <button class="prev-next-button" onclick="location.href='{% url 'general_instruction' %}'">Prev</button>
+            <div class="button-center">
+                <button class="proceed-button" onclick="location.href='{% url 'opportunities' %}'">Save</button>
+            </div>
+            <button class="prev-next-button" onclick="location.href='{% url 'opportunities' %}'">Next</button>
+        </div>
+
+    <script>
+        function updateSubCat() {
+            const profCat = document.getElementById('profCat').value;
+            const subCat = document.getElementById('subCat');
+            subCat.innerHTML = '';
+
+            let options = [];
+
+            switch (profCat) {
+                case 'Nurse/Midwife':
+                    options = [
+                        { value: '1.1', text: '1.1 Nurse' },
+                        { value: '1.2', text: '1.2 Midwife' },
+                        { value: '1.3', text: '1.3 Student' }
+                    ];
+                    break;
+                case 'Auxiliary':
+                    options = [{ value: 'Auxiliary', text: 'Auxiliary' }];
+                    break;
+                case 'Medical Doctor':
+                    options = [
+                        { value: '3.1', text: '3.1 Internal Medicine' },
+                        { value: '3.2', text: '3.2 Surgeon' },
+                        { value: '3.3', text: '3.3 Anaesthetist / Resuscitator / Emergency Physician' },
+                        { value: '3.4', text: '3.4 Paediatrician' },
+                        { value: '3.5', text: '3.5 Gynaecologist' },
+                        { value: '3.6', text: '3.6 Consultant' },
+                        { value: '3.7', text: '3.7 Medical Student' }
+                    ];
+                    break;
+                case 'Other Health Care Worker':
+                    options = [
+                        { value: '4.1', text: '4.1 Therapist' },
+                        { value: '4.2', text: '4.2 Technician' },
+                        { value: '4.3', text: '4.3 Other' },
+                        { value: '4.4', text: '4.4 Student' }
+                    ];
+                    break;
+                default:
+                    options = [{ value: '', text: 'Please select a sub-category' }];
+            }
+
+            options.forEach(option => {
+                const newOption = document.createElement('option');
+                newOption.value = option.value;
+                newOption.textContent = option.text;
+                subCat.appendChild(newOption);
+            });
+        }
+    </script>
+    </div>
 </body>
 </html>
+
+

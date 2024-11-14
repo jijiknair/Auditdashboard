@@ -1,10 +1,300 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Hygiene</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #e0f7fa, #ffecd2);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 80px; /* Space for the fixed header */
+        }
+        /* Header Styling */
+        .header {
+            width: 100vw; /* Full viewport width */
+            background-color: #0d3b66;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-radius: 0 0 12px 12px;
+        }
+        /* Menu Icon Styling */
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 0px; /* Reduced margin for closer spacing */
+        }
+        .username {
+            background: linear-gradient(135deg, #007bff, #28a745);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 4px 10px; /* Reduce padding for a tighter fit */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        /* Search Box Styling */
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+        }
+
+        /* Right Section Styling */
+        .right {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        /* Profile Avatar Styling */
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        /* Container for Form */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: 600;
+            color: #0d3b66;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #333;
+            background: #f9f9f9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            outline: none;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        .start-audit-button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+        }
+
+        .start-audit-button:hover {
+            background-color: #0056b3;
+        }
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin: 0 15px;
+            text-align: center;
+            background: linear-gradient(135deg, #007bff, #28a745); /* Gradient similar to other elements */
+            padding: 8px 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Center Heading Styles */
+        .heading {
+            font-size: 36px;
+            font-weight: bold;
+            color: #0d3b66;
+            text-align: center;
+            margin-top: 100px; /* Add margin-top to move it below the header */
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #007bff, #28a745); /* Gradient similar to other elements */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-$END$
+   <header class="header">
+        <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+        <span class="username">Hi,{{ username }}</span>
+       <h1>Hand Hygiene</h1>
+    <div class="right">
+        <div class="icon">🔔</div>
+        <img src="{% static 'images/profileicon.jpg' %}" alt="Profile Avatar" class="profile-avatar">
+    </div>
+</header>
+    <!-- Form Container -->
+    <div class="container">
+        <div class="form-group">
+            <label for="facility">Facility Name</label>
+            <input type="text" id="facility" placeholder="Enter Facility Name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="governate">Governate</label>
+            <select id="governate" name="governate" required>
+                <option value="muscat">Muscat</option>
+                <option value="dhofar">Dhofar</option>
+                <option value="musandam">Musandam</option>
+                <option value="al_batinah">Al Batinah</option>
+                <option value="al_dakhiliyah">Al Dakhiliyah</option>
+                <option value="buraymi">Buraymi</option>
+                <option value="batinah_north">Al Batinah North</option>
+                <option value="batinah_south">Al Batinah South</option>
+                <option value="al_wusta">Al Wusta</option>
+                <option value="ash_sharqiyah_north">Ash Sharqiyah North</option>
+                <option value="ash_sharqiyah_south">Ash Sharqiyah South</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="wilayat">Wilayat</label>
+            <select id="wilayat" name="wilayat" required>
+                <option value="" disabled selected>Select Wilayat</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" placeholder="Enter Location" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ward">Ward</label>
+            <input type="text" id="ward" placeholder="Enter Ward Name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="audit_date">Audit Date</label>
+            <input type="date" id="audit_date" name="audit_date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="audit_time">Audit Time</label>
+            <input type="time" id="audit_time" name="audit_time" required>
+        </div>
+
+        <div class="form-group">
+            <label for="profCat">Profession Category</label>
+            <select id="profCat" onchange="updateSubCat()" required>
+                <option value="" disabled selected>Select a Profession</option>
+                <option value="Nurse/Midwife">Nurse/Midwife</option>
+                <option value="Auxiliary">Auxiliary</option>
+                <option value="Medical Doctor">Medical Doctor</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="profSubCat">Profession Sub-Category</label>
+            <select id="profSubCat" required>
+                <option value="" disabled selected>Select Profession Sub-Category</option>
+            </select>
+        </div>
+        <a href="{% url 'general_instruction' %}">
+    <button class="start-audit-button">Start Audit</button>
+</a>
+    </div>
+
+    <script>
+        const wilayatOptions = {
+            muscat: ['Al Amerat', 'Bawshar', 'Muscat'],
+            dhofar: ['Salalah', 'Mirbat', 'Thumrait'],
+            musandam: ['Khasab', 'Dibba'],
+            al_batinah: ['Sohar', 'Shinas'],
+            al_dakhiliyah: ['Nizwa', 'Samail'],
+            buraymi: ['Al Buraymi'],
+            batinah_north: ['Liwa'],
+            batinah_south: ['Barka'],
+            al_wusta: ['Haima'],
+            ash_sharqiyah_north: ['Ibra'],
+            ash_sharqiyah_south: ['Sur']
+        };
+
+        document.getElementById("governate").addEventListener("change", function() {
+            const selectedGovernate = this.value;
+            const wilayatSelect = document.getElementById("wilayat");
+            wilayatSelect.innerHTML = '<option value="" disabled selected>Select Wilayat</option>';
+
+            const options = wilayatOptions[selectedGovernate];
+
+            if (options) {
+                options.forEach(function(wilayat) {
+                    const option = document.createElement("option");
+                    option.value = wilayat.toLowerCase().replace(/\s+/g, "_");
+                    option.textContent = wilayat;
+                    wilayatSelect.appendChild(option);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,68 +8,417 @@
     <style>
         /* General Styles */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #e6f7ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffecd2);
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px; /* Space for the fixed header */
+            color: #333;
         }
 
         .container {
-            max-width: 600px;
-            width: 100%;
-            background-color: white;
+            max-width: 1000px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.9);
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
         h1 {
-            color: #007bff;
-            margin-bottom: 30px;
-            font-size: 28px;
+         color: #007bff;
+         font-size: 32px;
+         font-weight: 600;
+         margin-bottom: 30px;
+         line-height: 1.2;
+         letter-spacing: 1px;
+         text-transform: uppercase;
+         text-shadow: 2px 2px 4px rgba(0, 123, 255, 0.3);
+         background: linear-gradient(135deg, #e0f7fa, #c2e9fb);
+         padding: 10px;
+         border-radius: 10px;
+         transition: transform 0.3s ease;
+      }
+
+        h1:hover {
+            transform: scale(1.05);
         }
 
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+        /* Grid Layout for Tiles */
+        .tile-group {
+            display: grid;
+            grid-template-areas:
+                "tile1 tile2 tile3"
+                "tile4 tile5 tile6"
+                "tile7 tile8 .";
             gap: 20px;
         }
 
-        button {
-            width: 48%;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
+        .tile {
+            background: linear-gradient(135deg, #e0f7fa, #c2e9fb);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
         }
+
+        .icon-circle {
+            margin-bottom: 15px;
+        }
+
+        .icon-circle img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .tile:hover .icon-circle img {
+            transform: scale(1.1);
+        }
+
+        .tile p {
+            font-size: 16px;
+            font-weight: 600;
+            color: #007bff;
+            margin-top: 10px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .tile-group {
+                grid-template-areas:
+                    "tile1 tile2"
+                    "tile3 tile4"
+                    "tile5 tile6"
+                    "tile7 tile8";
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            .tile-group {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "tile1"
+                    "tile2"
+                    "tile3"
+                    "tile4"
+                    "tile5"
+                    "tile6"
+                    "tile7"
+                    "tile8";
+            }
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #0d3b66;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .header .left, .header .right {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Search Box */
+        .search-box {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        color: #007bff;
+        margin: 0 auto;
+}
+
+        .icon {
+            font-size: 22px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .menu-icon {
+        font-size: 24px;
+        cursor: pointer;
+        color: white; /* Adjust color as needed */
+        margin-right: 15px;
+       }
+         /* Overlay styling for background effect */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4); /* Darker overlay for contrast */
+        display: none; /* Hidden by default */
+        z-index: 999; /* On top of all elements */
+        transition: opacity 0.3s ease; /* Smooth fade effect */
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        background: linear-gradient(135deg, #005b96, #48a9d9); /* Soft blue gradient */
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        transform: translateX(-100%); /* Hidden off-screen by default */
+        transition: transform 0.3s ease; /* Slide-in effect */
+        z-index: 1000;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Softer shadow for healthcare look */
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    /* Sidebar open class */
+    .sidebar.open {
+        transform: translateX(0); /* Slide into view */
+    }
+
+    /* Menu item styling */
+    .menu-item {
+        width: 100%;
+        padding: 12px 0;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Menu item hover effect */
+    .menu-item:hover {
+        background-color: rgba(255, 255, 255, 0.2); /* Light overlay on hover */
+        transform: scale(1.05); /* Slightly enlarge on hover */
+    }
+
+    /* Icon styling within menu items */
+    .menu-item i {
+        margin-right: 15px;
+        font-size: 22px;
+    }
+    /* Smooth fade-in animation for menu items */
+    .menu-item {
+        opacity: 0;
+        animation: fadeIn 0.5s forwards;
+        animation-delay: 0.2s;
+    }
+    /* Keyframes for fade-in animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #0d3b66;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: white; /* Icon color */
+            margin-right: 15px;
+        }
+
+        .header .right {
+            display: flex;
+            align-items: center;
+        }
+        .username {
+    display: inline-block;
+    background: linear-gradient(135deg, #007bff, #28a745); /* Soft blue to green gradient */
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Softer shadow for a cleaner look */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Hover effect for a modern look */
+.username:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); /* Slightly darker shadow on hover */
+}
+
+/* Animation for entrance effect */
+.username {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Select an Audit</h1>
-        <div class="button-group">
-            <button onclick="location.href='#'">Endoscopy Audit</button>
-            <button onclick="location.href='#'">Audit CheckList for IPC program DGHS 2024</button>
-            <button onclick="location.href='#'">CSSD Audit</button>
-            <button onclick="location.href='#'">Hospital IPC Audit 2024</button>
-            <button onclick="location.href='#'">IPC Audit Checklist for PHC-Vers 2-2024 mod</button>
-            <button onclick="location.href='#'">RDU Audit</button>
-            <button onclick="location.href='#'">Environmental Health Audit</button>
+<header class="header">
+        <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+        <input type="text" class="search-box" placeholder="Search Audit..." onkeyup="filterAudits()">
+    <div class="right">
+        <span class="username">Hi,{{ username }}</span>
+        <div class="icon">🔔</div>
+        <img src="{% static 'images/profileicon.jpg' %}" alt="Profile Avatar" class="profile-avatar">
+    </div>
+</header>
+<div class="container">
+    <h1>Audit Categories</h1>
+    <div class="tile-group">
+        <div class="tile" style="grid-area: tile1;" onclick="location.href='{% url 'base' %}'">
+            <div class="icon-circle"><img src="{% static 'images/PHCIPC.png' %}" alt="PHC IPC"></div>
+            <p>PHC IPC</p>
+        </div>
+        <div class="tile" style="grid-area: tile5;" onclick="location.href='#'">
+            <div class="icon-circle"><img src="{% static 'images/CSSD.png' %}" alt="CSSD"></div>
+            <p>CSSD</p>
+        </div>
+        <div class="tile" style="grid-area: tile2;" onclick="#">
+            <div class="icon-circle"><img src="{% static 'images/HH.png' %}" alt="HH"></div>
+            <p>HH</p>
+        </div>
+        <div class="tile" style="grid-area: tile3;" onclick="location.href='#'">
+            <div class="icon-circle"><img src="{% static 'images/envfinal.png' %}" alt="Env. Clean"></div>
+            <p>Env. Clean</p>
+        </div>
+        <div class="tile" style="grid-area: tile4;" onclick="location.href='#'">
+            <div class="icon-circle"><img src="{% static 'images/HospitalIPC.png' %}" alt="Hospital IPC"></div>
+            <p>Hospital IPC</p>
+        </div>
+
+        <div class="tile" style="grid-area: tile6;" onclick="location.href='#'">
+            <div class="icon-circle"><img src="{% static 'images/DGHSIPC.png' %}" alt="DGHS IPC"></div>
+            <p>DGHS IPC</p>
+        </div>
+        <div class="tile" style="grid-area: tile7;" onclick="location.href='#'">
+            <div class="icon-circle"><img src="{% static 'images/Endoscope.png' %}" alt="Endoscope"></div>
+            <p>Endoscope</p>
+        </div>
+        <div class="tile" style="grid-area: tile8;" onclick="location.href='#'">
+            <div class="icon-circle"><img src="{% static 'images/RDUIPC.png' %}" alt="RDU IPC"></div>
+            <p>RDU IPC</p>
         </div>
     </div>
+</div>
+<!-- HTML for Overlay and Sidebar -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+    <div class="menu-item" onclick="location.href='#'">
+        <i class="fas fa-home"></i> Home
+    </div>
+    <div class="menu-item" onclick="location.href='#about'">
+        <i class="fas fa-info-circle"></i> About App
+    </div>
+    <div class="menu-item" onclick="location.href='#contact'">
+        <i class="fas fa-envelope"></i> Contact Us
+    </div>
+    <div class="menu-item" onclick="location.href='#settings'">
+        <i class="fas fa-cog"></i> Settings
+    </div>
+</div>
+
+<script>
+    function filterAudits() {
+        const query = document.querySelector('.search-box').value.toLowerCase();
+        const tiles = document.querySelectorAll('.tile');
+
+        tiles.forEach(tile => {
+            const auditName = tile.querySelector('p').textContent.toLowerCase();
+            if (auditName.includes(query)) {
+                tile.style.display = 'block';
+            } else {
+                tile.style.display = 'none';
+            }
+        });
+    }
+    function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("overlay");
+        const isOpen = sidebar.classList.toggle("open");
+        overlay.style.display = isOpen ? "block" : "none";
+    }
+</script>
 </body>
 </html>

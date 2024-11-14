@@ -1,10 +1,69 @@
+<!-- templates/compliance_chart.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Compliance Chart</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2a45d; color: white; }
+        .calc-cell { background-color: #fde9d8; }
+    </style>
 </head>
 <body>
-$END$
+    <h2>Observation Form – Basic Compliance Calculation</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2">Session No</th>
+                <th colspan="2">Facility</th>
+                <th colspan="2">Period</th>
+                <th colspan="2">Setting</th>
+                <th colspan="2">Total per session</th>
+            </tr>
+            <tr>
+                <th>Opp (n)</th>
+                <th>HR (n)</th>
+                <th>Opp (n)</th>
+                <th>HR (n)</th>
+                <th>Opp (n)</th>
+                <th>HR (n)</th>
+                <th>Opp (n)</th>
+                <th>HR (n)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ind in indications %}
+            <tr>
+                <td>{{ ind.session_no }}</td>
+                <td>{{ ind.opp_hr }}</td>
+                <td>{{ ind.act_hr }}</td>
+                <td>{{ ind.opp_hw }}</td>
+                <td>{{ ind.act_hw }}</td>
+                <!-- Additional cells for other categories as needed -->
+            </tr>
+            {% endfor %}
+
+            <!-- Total row -->
+            <tr class="calc-cell">
+                <td>Total Calculation</td>
+                <td>{{ total_opp_hr }}</td>
+                <td>{{ total_act_hr }}</td>
+                <td>{{ total_opp_hw }}</td>
+                <td>{{ total_act_hw }}</td>
+                <!-- Additional cells for other categories if needed -->
+            </tr>
+
+            <!-- Compliance row -->
+            <tr class="calc-cell">
+                <td>Compliance (%)</td>
+                <td colspan="2">HR: {{ hr_compliance|floatformat:2 }}%</td>
+                <td colspan="2">HW: {{ hw_compliance|floatformat:2 }}%</td>
+                <!-- Additional cells for other categories if needed -->
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

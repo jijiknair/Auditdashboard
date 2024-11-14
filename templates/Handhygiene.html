@@ -1,10 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>IPC Program Elements</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #e6f7ff;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center; /* Centering the heading */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .scoring-dropdown select, .input-box input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .scoring-dropdown select {
+            transition: background-color 0.3s ease;
+        }
+
+        /* Increase width of Scoring column */
+        th.scoring-column {
+            width: 180px; /* Adjust width as necessary */
+        }
+        /* Style for comments input box */
+        .comments-input input {
+            width: 95%; /* Increase the width */
+            height: 40px; /* Increase the height */
+            padding: 10px; /* Increase padding for larger appearance */
+            box-sizing: border-box;
+            font-size: 16px; /* Increase font size for better visibility */
+        }
+        /* Style the next button */
+        .next-button {
+            display: block;
+            width: 100px;
+            padding: 10px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .next-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-$END$
+    <h1>Infection Prevention and Control Training</h1>
+      <!-- Form wrapping the table -->
+    <form id="ipcForm" method="post" action="/submit-data/">
+    <table>
+        <thead>
+            <tr>
+                <th>Ref No</th>
+                <th>Elements</th>
+                <th colspan="3">Activities</th>
+                <th class="scoring-column">Scoring</th> <!-- Apply class to increase width -->
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>D</th>
+                <th>SI</th>
+                <th>O</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2.1</td>
+                <td>Education and Training on infection control done for newly recruited staff</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>2.2</td>
+                <td>Facility has a competency-based training program on infection prevention practices (HH, PPE, N95) for all HCWs</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>2.3</td>
+                <td>Facility has implemented a continuous education and training for HCWs on infection control and have coverage more then 80% of HCWs are trained</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>2.4</td>
+                <td>Provides education on infection prevention and control for patients, families and visitors</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>2.5</td>
+                <td>Facility has database for HCWS training in infection prevention and control</td>
+                <td class="input-box"><input type="text" placeholder="D"></td>
+                <td class="input-box"><input type="text" placeholder="SI"></td>
+                <td class="input-box"><input type="text" placeholder="O"></td>
+                <td class="scoring-dropdown">
+                    <select onchange="changeColor(this)">
+                        <option value="NA">NA</option>
+                        <option value="Partially Met">Partially Met</option>
+                        <option value="Met">Met</option>
+                        <option value="Not Met">Not Met</option>
+                    </select>
+                </td>
+            </tr>
+        <tr>
+            <td>Comments</td>
+            <td class="comments-input"><input type="text" placeholder="Enter comments"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="comments-input"><input type="text" placeholder="Enter comments"></td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- Add the Next button -->
+        <button type="submit" class="next-button">Next</button>
+    </form>
+
+    <script>
+        function changeColor(selectElement) {
+            var selectedValue = selectElement.value;
+
+            // Apply color based on the selected value
+            if (selectedValue === "NA") {
+                selectElement.style.backgroundColor = "white";
+            } else if (selectedValue === "Partially Met") {
+                selectElement.style.backgroundColor = "yellow";
+            } else if (selectedValue === "Met") {
+                selectElement.style.backgroundColor = "green";
+            } else if (selectedValue === "Not Met") {
+                selectElement.style.backgroundColor = "red";
+            }
+        }
+    </script>
 </body>
 </html>
