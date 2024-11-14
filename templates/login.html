@@ -1,103 +1,188 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - User Management Dashboard</title>
+    <title>Login - Hospital Audit Dashboard</title>
     <style>
+        /* Reset and General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.3), rgba(255, 235, 205, 0.3)),
+                        url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            color: #333;
         }
+
+        /* Container Styling */
         .container {
             max-width: 400px;
             width: 100%;
-            background-color: #ffffff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 40px 30px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
         }
-        h2 {
+
+        /* Decorative Background Circles */
+        .circle1, .circle2 {
+            position: absolute;
+            background: #007bff;
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        .circle1 {
+            width: 250px;
+            height: 250px;
+            top: -80px;
+            left: -80px;
+        }
+        .circle2 {
+            width: 180px;
+            height: 180px;
+            bottom: -40px;
+            right: -40px;
+        }
+
+        /* Logo Styling */
+        .logo {
+            max-width: 180px;
+            height: auto;
             margin-bottom: 20px;
-            color: #333;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
         }
+
+        /* Header */
+        h2 {
+            margin-bottom: 25px;
+            color: #007bff;
+            font-size: 26px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Form Layout */
         form {
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            text-align: left;
-        }
-        input[type="text"],
-        input[type="password"] {
-            padding: 10px;
+
+        /* Input Fields with Left Icons */
+        .input-container {
+            position: relative;
+            width: 100%;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #007bff33;
+            border-radius: 12px;
+            background-color: rgba(248, 249, 250, 0.8);
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
         }
-        button {
-            background-color: #4CAF50;
-            color: white;
+
+        .input-container .icon {
+            padding: 12px;
+            font-size: 18px;
+            color: #007bff;
+        }
+
+        .input-container input {
+            width: 100%;
+            padding: 12px;
             border: none;
-            padding: 15px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
+            color: #333; /* Ensuring text visibility */
             font-size: 16px;
-            border-radius: 4px;
+            background-color: transparent;
+            outline: none;
+        }
+
+        .input-container input::placeholder {
+            color: #666; /* Making placeholder text more visible */
+        }
+
+        /* Button Styles */
+        button {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
         }
+
         button:hover {
-            background-color: #45a049;
+            background-color: #0056b3;
+            transform: scale(1.03);
         }
-        .error {
-            color: red;
-            margin-bottom: 20px;
-        }
+
+        /* Signup Link */
         .signup-link {
-            margin-top: 10px;
-            display: block;
-            font-size: 14px;
+            margin-top: 15px;
+            font-size: 15px;
+            color: #555;
         }
+
         .signup-link a {
-            color: #4CAF50;
+            color: #007bff;
             text-decoration: none;
+            font-weight: 600;
         }
+
         .signup-link a:hover {
             text-decoration: underline;
         }
     </style>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h2>User Management Dashboard</h2>
+        <!-- Decorative Background Circles -->
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+
+        <!-- Logo and Title -->
+        <img src="{% static 'images/newlogomoh.png' %}" alt="Ministry of Health Logo" class="logo">
+        <h2>Hospital Audit Dashboard</h2>
+
+        <!-- Login Form -->
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <div>
-                <label for="id_username">Username</label>
-                <input type="text" id="id_username" name="username" value="{{ form.username.value|default_if_none:'' }}">
+            <div class="input-container">
+                <i class="fas fa-user icon"></i>
+                <input type="text" id="id_username" name="username" placeholder="Username" value="{{ form.username.value|default_if_none:'' }}">
             </div>
-            <div>
-                <label for="id_password">Password</label>
-                <input type="password" id="id_password" name="password">
+            <div class="input-container">
+                <i class="fas fa-lock icon"></i>
+                <input type="password" id="id_password" name="password" placeholder="Password">
             </div>
             <button type="submit">Login</button>
         </form>
+        <!-- Signup Link -->
         <div class="signup-link">
             <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
         </div>
     </div>
 </body>
 </html>
-
-

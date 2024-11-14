@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Hygiene Form</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffecd2);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Heading color and alignment */
+        h1 {
+            color: #1565c0;
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            font-size: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #1565c0, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, letter-spacing 0.2s;
+        }
+
+        h1:hover {
+            transform: scale(1.1);
+            letter-spacing: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #cfd8dc;
+            padding: 15px;
+            text-align: center;
+            font-size: 15px;
+            color: #01579b; /* Blue text */
+        }
+
+        th {
+            background-color: #81d4fa;
+            font-weight: 600;
+        }
+
+        td {
+            background-color: #e1f5fe;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #01579b; /* Blue for labels */
+        }
+
+        .hidden-options,
+        .glove-option {
+            display: none;
+            margin-top: 10px;
+        }
+
+        /* Style for circular checkbox */
+        input[type="checkbox"].circle {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 2px solid #01579b;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"].circle:checked {
+            background-color: #4caf50;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .button-center {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .prev-next-button,
+        .proceed-button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .prev-next-button {
+            background-color: #81d4fa;
+            color: #fff;
+        }
+
+        .prev-next-button:hover {
+            background-color: #039be5;
+            transform: translateY(-2px);
+        }
+
+        .proceed-button {
+            background-color: #66BB6A; /* Green color */
+            color: white;
+        }
+
+        .proceed-button:hover {
+            background-color: #1E88E5; /* Darker blue on hover */
+            transform: translateY(-2px);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Hand Hygiene Form</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Opp.</th>
+                <th>Indication</th>
+                <th>HH Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td><label><input type="checkbox" name="indication"> Before Touching A Patient</label></td>
+                <td rowspan="5">
+                    <label><input type="radio" name="hh_action" value="hr" id="hr-checkbox"> HR</label><br>
+                    <label><input type="radio" name="hh_action" value="hw" id="hw-checkbox"> HW</label><br>
+                    <label><input type="radio" name="hh_action" value="missed" id="missed-checkbox"> Missed</label>
+
+                    <!-- Hidden Gloves Option -->
+                    <div id="glove-option" class="glove-option">
+                        <label><input type="checkbox" name="gloves" class="circle"> Gloves</label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><label><input type="checkbox" name="indication">Before Clean/Aseptic Procedure</label></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><label><input type="checkbox" name="indication">After Body Fluid Exposure Risk</label></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><label><input type="checkbox" name="indication">After Touching A Patient </label></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><label><input type="checkbox" name="indication">After Touching Patient Surroundings</label></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Buttons Section -->
+    <div class="button-group">
+        <button class="prev-next-button" onclick="location.href='{% url 'general_instruction' %}'">Prev</button>
+        <div class="button-center">
+            <button class="proceed-button" onclick="location.href='{% url 'opportunities' %}'">Save</button>
+        </div>
+        <button class="prev-next-button" onclick="location.href='{% url 'formselection' %}'">Next</button>
+    </div>
+</div>
+
+<script>
+    const missedCheckbox = document.getElementById('missed-checkbox');
+    const gloveOption = document.getElementById('glove-option');
+
+    // Show gloves option when 'Missed' is selected
+    missedCheckbox.addEventListener('change', function () {
+        gloveOption.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Hide gloves option if HR or HW is selected
+    document.querySelectorAll('input[name="hh_action"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            if (this.value !== 'missed') {
+                gloveOption.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>

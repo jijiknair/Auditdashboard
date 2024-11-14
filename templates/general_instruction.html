@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Instructions - IPC Audit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffecd2);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styling */
+        .header {
+            width: 100vw;
+            background-color: #0d3b66;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-radius: 0 0 12px 12px;
+        }
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+            left: 10px; /* Adjusts the position to the right */
+        }
+        .username {
+            background: linear-gradient(135deg, #007bff, #28a745);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Right Section Styling */
+        .right {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            overflow: hidden;
+            margin-right: 40px;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: left;
+            margin-top: 100px;
+            overflow: hidden;
+        }
+
+        /* Heading and Subheading Styles */
+        h1 {
+            font-size: 2.5rem;
+            color: #007bff;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #007bff;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        /* Introduction Text */
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333333;
+            margin-bottom: 25px;
+            text-align: justify;
+            padding-left: 5px;
+        }
+
+        /* Recommendations List Styling */
+        ol.recommendations {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #333;
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        ol.recommendations li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        ol.recommendations li::before {
+            content: '✔';
+            font-size: 18px;
+            color: #007bff;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Button Styling */
+        .next-button {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin: 0 auto;
+            max-width: 300px;
+            box-shadow: 0 8px 15px rgba(0, 123, 255, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .next-button:hover {
+            background-color: #218838;
+        }
+
+        .home-icon {
+            font-size: 28px;
+            color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: color 0.3s;
+            margin-left: 10px;
+        }
+
+        .home-icon:hover {
+            color: #007bff;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <a href="{% url 'audit_selection' %}">
+            <div class="home-icon">
+                <i class="fas fa-home"></i>
+            </div>
+        </a>
+        <span class="username">IPC Audit</span>
+        <div class="right">
+            <span class="username">Hi, {{ username }}</span>
+            <div class="icon">🔔</div>
+            <img src="{% static 'images/profileicon.jpg' %}" alt="Profile Avatar" class="profile-avatar">
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <!-- Main Heading -->
+        <h1>General Recommendations</h1>
+        <p>(refer to the Hand Hygiene Technical Reference Manual)</p>
+
+        <!-- Recommendations List -->
+        <ol class="recommendations">
+            <li>In the context of open and direct observations, the observer introduces him/herself to the health-care worker and to the patient when appropriate, explains his/her task, and proposes immediate informal feedback.</li>
+            <li>The health-care worker, belonging to one of the main four following professional categories (see below), is observed during the delivery of health-care activities to patients.</li>
+            <li>Detected and observed data should be recorded with a pencil in order to be immediately corrected if needed.</li>
+            <li>The top of the form (header) is completed before starting data collection (excepted end time and session duration).</li>
+            <li>The session should last no more than 20 minutes (± 10 minutes according to the observed activity); the end time and the session duration are to be completed at the end of the observation session.</li>
+            <li>The observer may observe up to three health-care workers simultaneously, if the density of hand hygiene opportunities permits.</li>
+            <li>Each column of the grid to record hand hygiene practices is intended to be dedicated to a specific professional category. Therefore, numerous health-care workers may be sequentially included during one session in the column dedicated to their category. Alternatively, each column may be dedicated to a single health-care worker only, of whom the professional category should be indicated.</li>
+            <li>As soon as you detect an indication for hand hygiene, count an opportunity in the appropriate column and cross the square corresponding to the indication(s) you detected. Then complete all the indications that apply and the related hand hygiene actions observed or missed.</li>
+            <li>Each opportunity refers to one line in each column; each line is independent from one column to another.</li>
+            <li>Cross items in squares (several may apply for one opportunity) or circles (only a single item may apply at one moment).</li>
+            <li>When several indications fall in one opportunity, each one must be recorded by crossing the squares.</li>
+            <li>Performed or missed actions must always be registered within the context of an opportunity.</li>
+            <li>Glove use may be recorded only when the hand hygiene action is missed while the health-care worker is wearing gloves.</li>
+        </ol>
+        <!-- Next Button -->
+        <a href="{% url 'hhactionform' %}"> class="next-button">Proceed</a>
+    </div>
+</body>
+</html>

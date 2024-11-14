@@ -1,0 +1,393 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facility Demographic Data</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Existing styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffecd2);
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 1.1em;
+            color: #555;
+        }
+        select, input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+        }
+        select:hover, input[type="text"]:hover, input[type="date"]:hover, textarea:hover {
+            border-color: #4CAF50;
+        }
+        .submit-btn {
+            margin-top: 30px;
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .field-icon {
+            margin-right: 10px;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        input:invalid, select:invalid, textarea:invalid {
+            border-color: red;
+        }
+        input:valid, select:valid, textarea:valid {
+            border-color: green;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .button-center {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .prev-next-button,
+        .proceed-button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .prev-next-button {
+            background-color: #81d4fa;
+            color: #fff;
+        }
+
+        .prev-next-button:hover {
+            background-color: #039be5;
+            transform: translateY(-2px);
+        }
+
+        .proceed-button {
+            background-color: #66BB6A;
+            color: white;
+        }
+
+        .proceed-button:hover {
+            background-color: #1E88E5;
+            transform: translateY(-2px);
+        }
+       /* Header Styling */
+        .header {
+            width: 100vw; /* Full viewport width */
+            background-color: #0d3b66;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-radius: 0 0 12px 12px;
+        }
+        /* Menu Icon Styling */
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 0px; /* Reduced margin for closer spacing */
+        }
+        .username {
+            background: linear-gradient(135deg, #007bff, #28a745);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 4px 10px; /* Reduce padding for a tighter fit */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        /* Search Box Styling */
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+        }
+
+        /* Right Section Styling */
+        .right {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    overflow: hidden;
+    margin-right: 40px; /* Adjusted margin for a little more space from the right */
+}
+      .home-icon {
+        font-size: 28px; /* Adjust size as needed */
+        color: #007bff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: color 0.3s;
+         margin-left: 10px;
+       }
+      .home-icon:hover {
+       color: #007bff; /* Change to your desired hover color */
+    }
+
+    </style>
+</head>
+<body>
+<!-- Header Section -->
+    <header class="header">
+       <a href="{% url 'audit_selection' %}">
+    <div class="home-icon">
+        <i class="fas fa-home"></i>
+    </div>
+     </a>
+        <span class="username">IPC Audit</span>
+        <div class="right">
+             <span class="username">Hi,{{ username }}</span>
+            <div class="icon">🔔</div>
+            <img src="{% static 'images/profileicon.jpg' %}" alt="Profile Avatar" class="profile-avatar">
+        </div>
+    </header>
+<form method="post" action="{% url 'audit_form' %}">
+    {% csrf_token %}
+    <h2><i class="fas fa-hospital"></i> Facility Demographic Data</h2>
+    <!-- Governate Field -->
+    <label for="governate">
+        <i class="fas fa-map-marker-alt field-icon"></i> Governate:
+        <span class="tooltip"><i class="fas fa-info-circle"></i>
+            <span class="tooltiptext">Select the governate where the hospital is located.</span>
+        </span>
+    </label>
+    <select id="governate" name="governate" required>
+        <option value="" disabled selected>Select Governate</option>
+        <option value="muscat">Muscat</option>
+        <option value="dhofar">Dhofar</option>
+        <option value="musandam">Musandam</option>
+        <option value="al_batinah">Al Batinah</option>
+        <option value="al_dakhiliyah">Al Dakhiliyah</option>
+        <option value="buraymi">Buraymi</option>
+        <option value="batinah_north">Al Batinah North</option>
+        <option value="batinah_south">Al Batinah South</option>
+        <option value="al_wusta">Al Wusta</option>
+        <option value="ash_sharqiyah_north">Ash Sharqiyah North</option>
+        <option value="ash_sharqiyah_south">Ash Sharqiyah South</option>
+    </select>
+
+    <!-- Wilayat Field -->
+    <label for="wilayat">
+        <i class="fas fa-city field-icon"></i> Wilayat:
+        <span class="tooltip"><i class="fas fa-info-circle"></i>
+            <span class="tooltiptext">Select the wilayat where the facility is located.</span>
+        </span>
+    </label>
+    <select id="wilayat" name="wilayat" required>
+        <option value="" disabled selected>Select Wilayat</option>
+    </select>
+
+    <!-- JavaScript for updating Wilayat options based on selected Governate -->
+    <script>
+        // Define mappings between Governates and Wilayats
+        const wilayatOptions = {
+            muscat: ["Al Amirat", "A'Seeb", "Boushar", "Matrah", "Qurayyat"],
+            dhofar: ["Salalah", "Taqah", "Mirbat", "Sadah", "Shaleem"],
+            musandam: ["Khasab", "Bukha", "Dibba", "Madha"],
+            al_batinah: ["Sohar", "Al Khabourah", "Al Suwaiq", "Liwa", "Saham", "Shinas"],
+            al_dakhiliyah: ["Nizwa", "Bahla", "Adam", "Al Hamra", "Izki", "Bidbid", "Samail", "Manah"],
+            buraymi: ["Al Buraimi", "Al Sunaynah", "Mahdah"],
+            batinah_north: ["Sohar", "Shinas", "Liwa", "Saham"],
+            batinah_south: ["Rustaq", "Awabi", "Barka", "Musannah"],
+            al_wusta: ["Hima", "Duqm", "Mahut"],
+            ash_sharqiyah_north: ["Ibra", "Al Qabil", "Mudaybi"],
+            ash_sharqiyah_south: ["Ja’alan Bani Bu Hassan", "Ja’alan Bani Bu Ali", "Al Kamil Wal Wafi"]
+        };
+
+        // Listen for Governate selection change
+        document.getElementById("governate").addEventListener("change", function() {
+            const governate = this.value;
+            const wilayatDropdown = document.getElementById("wilayat");
+
+            // Clear current Wilayat options
+            wilayatDropdown.innerHTML = '<option value="" disabled selected>Select Wilayat</option>';
+
+            // Populate new Wilayat options based on selected Governate
+            if (wilayatOptions[governate]) {
+                wilayatOptions[governate].forEach(wilayat => {
+                    const option = document.createElement("option");
+                    option.value = wilayat.toLowerCase().replace(/\s/g, "_");
+                    option.textContent = wilayat;
+                    wilayatDropdown.appendChild(option);
+                });
+            }
+        });
+    </script>
+
+     <!-- Facility Name Field -->
+        <label for="facility_name">
+            <i class="fas fa-clinic-medical field-icon"></i> Facility Name:
+            <span class="tooltip"><i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Enter the name of the hospital or medical facility.</span>
+            </span>
+        </label>
+        <input type="text" id="facility_name" name="facility_name" placeholder="Enter Facility Name" required>
+        <!-- Head of Institution Field -->
+        <label for="head_of_institution">
+            <i class="fas fa-user-md field-icon"></i> Head of Institution:
+            <span class="tooltip"><i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Enter the name of the hospital director or head of the facility.</span>
+            </span>
+        </label>
+        <input type="text" id="head_of_institution" name="head_of_institution" placeholder="Enter Head of Institution's Name" required>
+        <!-- Rationale for Assessment Field -->
+        <label for="rationale">
+            <i class="fas fa-notes-medical field-icon"></i> Rationale for Assessment:
+            <span class="tooltip"><i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Why is the assessment being conducted?</span>
+            </span>
+        </label>
+        <select id="rationale" name="rationale" required>
+            <option value="" disabled selected>Select Rationale</option>
+            <option value="annual_assessment">Regular</option>
+            <option value="complaint_investigation">Accreditation</option>
+            <option value="quality_control">Incident Investigation</option>
+            <option value="follow_up_visit">Outbreak Investigation</option>
+        </select>
+
+        <!-- Auditor Details Heading -->
+        <h2 style="margin-top: 40px;">Auditor Details</h2>
+
+        <!-- Audit Date Field -->
+        <label for="audit_date">
+            <i class="fas fa-calendar-alt field-icon"></i> Audit Date:
+            <span class="tooltip"><i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Select the date of the audit.</span>
+            </span>
+        </label>
+        <input type="date" id="audit_date" name="audit_date" required>
+
+        <!-- Lead Auditor Field -->
+        <label for="lead_auditor">
+            <i class="fas fa-user-shield field-icon"></i> Lead Auditor:
+            <span class="tooltip"><i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Enter the name of the lead auditor.</span>
+            </span>
+        </label>
+        <input type="text" id="lead_auditor" name="lead_auditor" placeholder="Enter Lead Auditor's Name" required>
+
+<label for="auditors">
+    <i class="fas fa-users field-icon"></i> Auditors:
+    <span class="tooltip"><i class="fas fa-info-circle"></i>
+        <span class="tooltiptext">Enter the names of other auditors (comma-separated).</span>
+    </span>
+</label>
+<textarea id="auditors" name="auditors" placeholder="Enter Auditors' Names (comma-separated)" rows="4" required></textarea>
+
+        <!-- Areas Covered Field -->
+        <label for="areas_covered">
+            <i class="fas fa-map-marked-alt field-icon"></i> Areas Covered:
+            <span class="tooltip"><i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Describe the areas covered during the audit.</span>
+            </span>
+        </label>
+        <textarea id="areas_covered" name="areas_covered" placeholder="Enter Areas Covered" rows="4" required></textarea>
+    <div class="button-group">
+        <button class="prev-next-button" onclick="location.href='{% url 'base' %}'">Prev</button>
+        <div class="button-center">
+            <button class="proceed-button">Submit</button>
+        </div>
+        <button class="prev-next-button" onclick="location.href='{% url 'explanation2' %}'">Next</button>
+    </div>
+</form>
+</body>
+</html>

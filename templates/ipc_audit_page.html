@@ -1,0 +1,415 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPC Audit</title>
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        /* Body styling */
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #f0f2f5;
+            overflow: hidden;
+        }
+/* Overall Sidebar Styling */
+.sidebar {
+    width: 450px; /* Increased sidebar width */
+    padding: 40px 25px; /* Added padding on top */
+    background: linear-gradient(135deg, #007bff, #00c6ff); /* Background gradient */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    overflow-y: auto; /* Scroll if content overflows */
+    height: 100vh; /* Full height of the viewport */
+    position: relative; /* Ensure positioning does not overflow */
+}
+
+/* Sidebar Header (Audit Menu) */
+.sidebar h2 {
+    font-size: 24px; /* Larger header font */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 20px; /* Increased margin for better spacing from top */
+    margin-bottom: 20px; /* Space below the heading */
+    color: #ffffff;
+    text-align: left;
+    padding-left: 10px; /* Ensures no overlap with the sidebar border */
+}
+
+/* Sidebar Button (Tile) Styling */
+.sidebar-button {
+    display: flex;
+    align-items: center; /* Align icon and text vertically */
+    justify-content: flex-start; /* Align icon and text to the left */
+    width: 100%;
+    padding: 15px 15px; /* Increased padding for larger tiles */
+    margin: 10px 0; /* Adjusted margin for better spacing */
+    font-size: 14px; /* Font size for readability */
+    font-weight: 400;
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+    border: none;
+    border-radius: 10px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+    text-align: left;
+    white-space: normal; /* Allow text wrapping */
+    box-sizing: border-box; /* Include padding in width/height calculation */
+}
+
+/* Sidebar Button Hover Effect */
+.sidebar-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Hover background color */
+    transform: scale(1.05); /* Slight scaling effect on hover */
+}
+
+/* Active Button Style */
+.sidebar-button.active {
+    background-color: rgba(255, 255, 255, 0.3); /* Active button background */
+    font-weight: bold;
+}
+
+/* Icon Styling in Buttons */
+.sidebar-button i {
+    margin-right: 10px; /* Reduced space between icon and text */
+    font-size: 20px; /* Larger icon size */
+    color: #00ffcc; /* Icon color */
+}
+.sidebar-button span {
+    flex-grow: 1; /* Ensures text aligns uniformly */
+}
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%; /* Sidebar should take full width on smaller screens */
+        padding: 15px;
+        box-sizing: border-box; /* Ensure no content overflows */
+    }
+
+    .sidebar h2 {
+        font-size: 20px; /* Slightly smaller font for the header */
+        margin-top: 20px; /* Ensure consistent spacing on smaller screens */
+    }
+
+    .sidebar-button {
+        font-size: 16px; /* Smaller font size for buttons */
+        padding: 12px 15px; /* Adjusted padding for compact view */
+    }
+
+    .sidebar-button i {
+        font-size: 20px; /* Smaller icon size */
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        width: 100%; /* Full width on very small screens */
+        padding: 5px;
+        border-radius: 0; /* Remove rounded corners */
+    }
+
+    .sidebar h2 {
+        font-size: 14px; /* Smaller font size for mobile */
+        margin-top: 15px; /* Reduced margin for smaller screens */
+    }
+
+    .sidebar-button {
+        font-size: 12px; /* Even smaller font for mobile */
+        padding: 10px 15px; /* Adjusted padding for better spacing */
+    }
+
+    .sidebar-button i {
+        font-size: 14px; /* Smaller icon for mobile */
+    }
+}
+
+        /* Content section styling */
+        .content {
+            flex-grow: 1;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 22px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+            width: 150px; /* Adjust the width as needed */
+            min-width: 150px; /* Ensures a minimum width */
+        }
+        textarea {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+            width: 100%;
+            height: 60px;
+            margin-top: 10px;
+        }
+        /* Button group styling */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .button-group button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 80px;
+            text-align: center;
+        }
+
+        .button-group button:hover {
+            background-color: #2980b9;
+        }
+
+        .button-group button.save-button, .button-group button.submit-button {
+            background-color: #28a745; /* Green background for Save and Submit */
+        }
+
+        .button-group button.save-button:hover, .button-group button.submit-button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        /* Header Styling */
+        .header {
+            width: 100vw; /* Full viewport width */
+            background-color: #0d3b66;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* Menu Icon Styling */
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 0px; /* Reduced margin for closer spacing */
+        }
+
+        .username {
+            background: linear-gradient(135deg, #007bff, #28a745);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 4px 10px; /* Reduce padding for a tighter fit */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Search Box Styling */
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+        }
+
+        /* Right Section Styling */
+        .right {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            overflow: hidden;
+            margin-right: 40px; /* Adjusted margin for a little more space from the right */
+     /* Style for the Home icon */
+    .home-icon {
+        font-size: 24px; /* Adjust size as needed */
+        color: #007bff; /* Blue color */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        transition: color 0.3s ease;
+    }
+
+    /* Optional: Add hover effect for the Home icon */
+    .home-icon:hover {
+        color: #0056b3; /* Darker blue on hover */
+    }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+         <a href="{% url 'audit_selection' %}">
+    <div class="home-icon">
+        <i class="fas fa-home"></i>
+    </div>
+     </a>
+          <span class="username">{{ heading }}</span>
+        <div class="right">
+            <span class="username">Hi,{{ username }}</span>
+            <div class="icon">🔔</div>
+            <img src="{% static 'images/profileicon.jpg' %}" alt="Profile Avatar" class="profile-avatar">
+        </div>
+    </header>
+    <!-- Sidebar Structure -->
+<div class="sidebar">
+    {% for key, value in headings.items %}
+        <button class="sidebar-button {% if key == current_key %}active{% endif %}"
+                onclick="window.location.href='{% url 'ipc_audit_page' key %}'"
+                title="{{ value }}">
+            <i class="fas fa-file-alt"></i> {{ value }}
+        </button>
+    {% endfor %}
+</div>
+
+    <!-- Main Content Section -->
+    <div class="content">
+        <h1>{{ heading }}</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ref. No</th>
+                        <th>Description</th>
+                        <th>D</th>
+                        <th>SI</th>
+                        <th>O</th>
+                        <th>Scoring</th>
+                        <th>Upload Photo</th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for element in elements %}
+    <tr>
+        <td>{{ element.ref_no }}</td>
+        <td>{{ element.description }}</td>
+        <td><input type="checkbox" name="d_{{ forloop.counter }}" value="D"></td>
+        <td><input type="checkbox" name="si_{{ forloop.counter }}" value="SI"></td>
+        <td><input type="checkbox" name="o_{{ forloop.counter }}" value="O"></td>
+        <td>
+            <select name="scoring_{{ forloop.counter }}" onchange="updateColor(this)">
+                <option value="">Select</option>
+                <option value="Met">Met</option>
+                <option value="Partially Met">Partially Met</option>
+                <option value="Not Met">Not Met</option>
+                <option value="NA">NA</option>
+            </select>
+        </td>
+        <td>
+            <input type="file" name="photo" accept=".jpeg, .jpg, .png, .pdf" />
+            <textarea name="remark1_{{ forloop.counter }}" id="remark1" rows="3" placeholder="Enter remarks for Image"></textarea>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+            </table>
+             <textarea name="comments" placeholder="Remarks..."></textarea>
+             <div class="button-group">
+    {% if page_number == 1 %}
+        <button type="submit" class="submit-button">Save</button>
+<button type="submit" class="next-button" name="next" >Next</button>
+    {% elif page_number < total_pages %}
+        <button type="button" class="prev-button" onclick="window.location.href='{% url 'ipc_audit_page' page_number|add:-1 %}'">Prev</button>
+        <button type="submit" class="submit-button">Save</button>
+        <button type="button" class="next-button" onclick="window.location.href='{% url 'ipc_audit_page' page_number|add:1 %}'">Next</button>
+    {% else %}
+        <button type="button" class="prev-button" onclick="window.location.href='{% url 'ipc_audit_page' page_number|add:-1 %}'">Prev</button>
+        <button type="submit" class="submit-button">Submit</button>
+    {% endif %}
+     </div>
+        </form>
+    </div>
+    <script>
+        function updateColor(select) {
+            const colors = {
+                'Met': '#90EE90',
+                'Partially Met': '#ffff00',
+                'Not Met': '#f44336',
+                'NA': '#cccccc'
+            };
+            select.style.backgroundColor = colors[select.value] || '';
+        }
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Selection - Hospital Dashboard</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffecd2);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px; /* Space for the fixed header */
+            color: #333;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #007bff;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            line-height: 1.2;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 123, 255, 0.3);
+            background: linear-gradient(90deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.3));
+            padding: 10px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #0d3b66;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+        }
+
+        .sidebar.show {
+            left: 0;
+        }
+
+        .sidebar .menu-item {
+            width: 100%;
+            padding: 15px;
+            color: #fff;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar .menu-item i {
+            margin-right: 10px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #0d3b66;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .header .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header .right {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Search Box */
+        .search-box {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #333;
+            margin: 0 auto;
+        }
+
+        .icon {
+            font-size: 22px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="menu-icon" onclick="toggleSidebar()">&#9776;</div>
+    <input type="text" class="search-box" placeholder="Search Audit..." onkeyup="filterAudits()">
+    <div class="right">
+        <span class="username">Hi, HandHygiene!</span> <!-- Replace with dynamic username from server -->
+    </div>
+</header>
+
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<div class="sidebar" id="sidebar">
+    <div class="menu-item" onclick="location.href='/'">
+        <i class="fas fa-home"></i> Home
+    </div>
+    <div class="menu-item" onclick="location.href='/contact-us/'">
+        <i class="fas fa-envelope"></i> Contact Us
+    </div>
+    <div class="menu-item" onclick="location.href='/about-app/'">
+        <i class="fas fa-info-circle"></i> About App
+    </div>
+    <div class="menu-item" onclick="location.href='/settings/'">
+        <i class="fas fa-cog"></i> Settings
+    </div>
+</div>
+
+<div class="container">
+    <h1>Audit Categories</h1>
+    <div class="tile-group">
+        <div class="tile" style="grid-area: tile1;" onclick="location.href='{% url 'handhygienenew' %}'">
+            <div class="icon-circle"><img src="{% static 'images/HH.png' %}" alt="HH"></div>
+            <p>HH</p>
+        </div>
+        <div class="tile" style="grid-area: tile2;" onclick="location.href='#'">
+            <div class="icon-circle"><img src="{% static 'images/CSSD.png' %}" alt="CSSD"></div>
+            <p>CSSD</p>
+        </div>
+        <div class="tile" style="grid-area: tile3;" onclick="location.href='#'">
+            <div class="icon-circle"><img src="{% static 'images/envfinal.png' %}" alt="Env. Clean"></div>
+            <p>Env. Clean</p>
+        </div>
+        <!-- Additional tiles here -->
+    </div>
+</div>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.querySelector('.overlay');
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+    }
+
+    function filterAudits() {
+        const query = document.querySelector('.search-box').value.toLowerCase();
+        const tiles = document.querySelectorAll('.tile');
+
+        tiles.forEach(tile => {
+            const auditName = tile.querySelector('p').textContent.toLowerCase();
+            if (auditName.includes(query)) {
+                tile.style.display = 'block';
+            } else {
+                tile.style.display = 'none';
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
