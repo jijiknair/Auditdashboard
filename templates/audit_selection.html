@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Selection - Hospital Dashboard</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e6f7ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        button {
+            width: 48%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select an Audit</h1>
+        <div class="button-group">
+            <button onclick="location.href='#'">Endoscopy Audit</button>
+            <button onclick="location.href='#'">Audit CheckList for IPC program DGHS 2024</button>
+            <button onclick="location.href='#'">CSSD Audit</button>
+            <button onclick="location.href='#'">Hospital IPC Audit 2024</button>
+            <button onclick="location.href='#'">IPC Audit Checklist for PHC-Vers 2-2024 mod</button>
+            <button onclick="location.href='#'">RDU Audit</button>
+            <button onclick="location.href='#'">Environmental Health Audit</button>
+        </div>
+    </div>
+</body>
+</html>
