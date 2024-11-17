@@ -1,6 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class FacilityAuditnew(models.Model):
+class FacilityAuditnewfinal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     facility_name = models.CharField(max_length=255)
     governate = models.CharField(max_length=100)
     wilayat = models.CharField(max_length=100)
@@ -10,20 +12,23 @@ class FacilityAuditnew(models.Model):
     lead_auditor = models.CharField(max_length=255)
     auditors = models.TextField()
     areas_covered = models.TextField()
+
     def __str__(self):
         return self.facility_name
 
-
-class AuditResponsenew(models.Model):
-    page_number = models.IntegerField()  # Section of the audit
-    ref_no = models.CharField(max_length=10)  # Reference number (e.g., "1.1")
-    description = models.TextField()  # Description of the element
-    response = models.CharField(max_length=20, choices=[('Met', 'Met'), ('Partially Met', 'Partially Met'),                                                  ('Not Met', 'Not Met')])  # User's response
-    audit_date = models.DateField(auto_now_add=True)  # Automatically store the audit date
+class AuditResponsenewfinal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Associate with a user
+    page_number = models.IntegerField()
+    ref_no = models.CharField(max_length=10)
+    description = models.TextField()
+    response = models.CharField(max_length=20, choices=[('Met', 'Met'), ('Partially Met', 'Partially Met'), ('Not Met', 'Not Met')])
+    audit_date = models.DateField(auto_now_add=True)
     def __str__(self):
         return f"Page {self.page_number}, Element {self.ref_no}: {self.response}"
 
-class AuditSummary(models.Model):
+
+class AuditSummaryfinal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     heading = models.CharField(max_length=255)
     met_count = models.IntegerField(default=0)  # Count of "Met"
     partially_met_count = models.IntegerField(default=0)  # Count of "Partially Met"

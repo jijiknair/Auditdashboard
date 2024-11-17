@@ -367,7 +367,6 @@
             <div class="icon-circle"><img src="{% static 'images/HospitalIPC.png' %}" alt="Hospital IPC"></div>
             <p>Hospital IPC</p>
         </div>
-
         <div class="tile" style="grid-area: tile6;" onclick="location.href='#'">
             <div class="icon-circle"><img src="{% static 'images/DGHSIPC.png' %}" alt="DGHS IPC"></div>
             <p>DGHS IPC</p>
@@ -397,13 +396,15 @@
     <div class="menu-item" onclick="location.href='#settings'">
         <i class="fas fa-cog"></i> Settings
     </div>
+    <div class="menu-item" onclick="window.location.href='{% url 'logout' %}'">
+    <i class="fas fa-cog"></i> LogOut
+</div>
 </div>
 
 <script>
     function filterAudits() {
         const query = document.querySelector('.search-box').value.toLowerCase();
         const tiles = document.querySelectorAll('.tile');
-
         tiles.forEach(tile => {
             const auditName = tile.querySelector('p').textContent.toLowerCase();
             if (auditName.includes(query)) {

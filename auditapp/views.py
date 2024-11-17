@@ -1,14 +1,15 @@
 # views.py
 from django.contrib import messages, auth
 from django.contrib.auth import login as auth_login, authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from auditapp.forms import SignUpForm, FacilityAuditForm
 from .forms import SignUpForm
 from django.urls import reverse
-from .models import FacilityAuditnew
+from .models import  FacilityAuditnewfinal
 from django.shortcuts import render, redirect
-from .models import AuditResponsenew, AuditSummary
+from django.contrib.auth.models import User
+from .models import AuditResponsenewfinal, AuditSummaryfinal
 from django.shortcuts import render
 import plotly.express as px
 import pandas as pd
@@ -52,31 +53,44 @@ def signup_view(request):
     return render(request, 'signup.html', {'form': form})
 
 
+@login_required  # Ensure the user is logged in
 def audit_form_view(request):
     if request.method == 'POST':
         form = FacilityAuditForm(request.POST)
         if form.is_valid():
-            form.save()  # Save the form data to the database
-            return redirect('explanation_page')  # Redirect to a success page or another view
+            # Create the form instance but don't save it to the database yet
+            audit = form.save(commit=False)
+            # Assign the logged-in user to the user field
+            audit.user = request.user  # Automatically assign the logged-in user to the user field
+            audit.save()
+            # Redirect to the explanation page or another success page after saving
+            return redirect('explanation_page')  # Adjust this to the correct view name
     else:
         form = FacilityAuditForm()
     return render(request, 'audit_form.html', {'form': form})
+
 
 def explanation_view(request):
     username = request.user.username
     return render(request, 'explanation.html',{'username': username})
 
+@login_required
 def facility_view(request):
     context = {
         'username': request.user.username,  # Passes the username to the template
     }
     return render(request, 'facility.html',context)
 
+
+
+@login_required
 def ipc_audit_healthcare(request):
     return render(request, 'ipc_audit_healthcare.html')
 
 def basefrm(request):
     return render(request, 'basefrm.html')
+
+
 
 def ipc_audit_page(request, page_number):
     headings = {
@@ -93,8 +107,6 @@ def ipc_audit_page(request, page_number):
         11: "Laundry Services",
         12: "Environmental Cleaning",
     }
-
-
     elements = {
                 1: [
                     {"ref_no": "1.1", "description": "At least one infection control focal point trained in IPC is available to manage the facility infection control program"},
@@ -241,8 +253,6 @@ def ipc_audit_page(request, page_number):
         partially_met_count = 0
         not_met_count = 0
         comments = request.POST.get('comments', '')
-
-
         # Loop through each element and save the response
         for i, element in enumerate(page_elements):
             d_value = request.POST.get(f'd_{i + 1}')
@@ -250,10 +260,10 @@ def ipc_audit_page(request, page_number):
             o_value = request.POST.get(f'o_{i + 1}')
             scoring_value = request.POST.get(f'scoring_{i + 1}')
 
-            # Check if the response already exists for this element and page
-            audit_response, created = AuditResponsenew.objects.update_or_create(
+            audit_response, created = AuditResponsenewfinal.objects.update_or_create(
                 page_number=page_number,
                 ref_no=element['ref_no'],
+                user=request.user,
                 defaults={'response': scoring_value},
             )
 
@@ -266,8 +276,9 @@ def ipc_audit_page(request, page_number):
                 not_met_count += 1
 
         # Update or create the AuditSummary for the given page_number
-        AuditSummary.objects.update_or_create(
+        AuditSummaryfinal.objects.update_or_create(
             heading=headings[page_number],
+            user=request.user,
             defaults={
                 'met_count': met_count,
                 'partially_met_count': partially_met_count,
@@ -291,7 +302,6 @@ def ipc_audit_page(request, page_number):
         'headings': headings,
         'username': request.user.username,  # Passes the username to the template
     }
-
     return render(request, 'ipc_audit_page.html', context)
 
 
@@ -301,23 +311,43 @@ def calculate_overall_score(met_count, partially_met_count, total_count):
     score = (met_count + 0.5 * partially_met_count) / total_count * 100  # Example formula
     return round(score, 2)  # Return rounded to 2 decimal places
 
-
+@login_required
 def audit_summary(request):
-    facility_audit = FacilityAuditnew.objects.last()
+    facility_audit = FacilityAuditnewfinal.objects.filter(user__username=request.user.username)
+    # Initialize default values in case no records are found
+    facility_name = 'N/A'
+    audit_date = 'N/A'
+    head_of_institution = 'N/A'
+    lead_auditor = 'N/A'
+
+    if facility_audit.exists():
+        # If records are found, access the first record (assuming only one audit per user)
+        facility_audit_instance = facility_audit.first()  # Use .first() to get the first record
+
+        # Now, access fields from the first record
+        facility_name = facility_audit_instance.facility_name
+        audit_date = facility_audit_instance.audit_date
+        head_of_institution = facility_audit_instance.head_of_institution
+        lead_auditor = facility_audit_instance.lead_auditor
+
     grand_met_total = 0
     grand_partially_met_total = 0
     grand_not_met_total = 0
     comments = []
 
     if request.method == 'POST':
+        # Handle form submission and save data for the logged-in user
         number_of_pages = 12  # Adjust based on your setup
         for i in range(number_of_pages):
             met_count = int(request.POST.get(f'met_count_{i}', 0))
             partially_met_count = int(request.POST.get(f'partially_met_count_{i}', 0))
             not_met_count = int(request.POST.get(f'not_met_count_{i}', 0))
-            comment = request.POST.get(f'comment_{i}', '')  # Fetch comment from the form
+            comment = request.POST.get(f'comment_{i}', '')
             comments.append(comment)
-            summary = AuditSummary(
+
+            # Save the summary with the current logged-in user
+            summary = AuditSummaryfinal(
+                user=request.user,
                 met_count=met_count,
                 partially_met_count=partially_met_count,
                 not_met_count=not_met_count,
@@ -325,30 +355,37 @@ def audit_summary(request):
             )
             summary.save()
 
+            # Update the grand totals
             grand_met_total += met_count
             grand_partially_met_total += partially_met_count
             grand_not_met_total += not_met_count
-
-    # If not a POST request, calculate the totals from existing AuditSummary entries
     else:
-        summaries = AuditSummary.objects.all()
+        # Fetch the AuditSummary data for the logged-in user only
+        summaries = AuditSummaryfinal.objects.filter(user=request.user)
 
         # Calculate the compliance percentage for each summary and round it
         for summary in summaries:
             total = summary.met_count + summary.partially_met_count + summary.not_met_count
             compliance_percentage = (summary.met_count / total * 100) if total else 0
-            summary.compliance_percentage = round(compliance_percentage)  # Round to the nearest whole number
+            summary.compliance_percentage = round(compliance_percentage)
             comments.append(summary.comments)
 
+        # Calculate grand totals
         grand_met_total = sum(summary.met_count for summary in summaries)
         grand_partially_met_total = sum(summary.partially_met_count for summary in summaries)
         grand_not_met_total = sum(summary.not_met_count for summary in summaries)
+
+    # Calculate grand total and overall score
     grand_total = grand_met_total + grand_partially_met_total + grand_not_met_total
     grand_overall_score = calculate_overall_score(grand_met_total, grand_partially_met_total, grand_total)
+
+    # Prepare context data
     context = {
         'facility_audit': facility_audit,
-        'facility_name': facility_audit.facility_name if facility_audit else 'N/A',
-        'audit_date': facility_audit.audit_date if facility_audit else 'N/A',
+        'facility_name': facility_name,
+        'audit_date': audit_date,
+        'head_of_institution': head_of_institution,
+        'lead_auditor': lead_auditor,
         'summaries': summaries,
         'grand_met_total': grand_met_total,
         'grand_partially_met_total': grand_partially_met_total,
@@ -356,16 +393,13 @@ def audit_summary(request):
         'grand_overall_score': grand_overall_score,
         'username': request.user.username,
         'comments': comments,
-        'head_of_institution':facility_audit.head_of_institution,  # Add Head of Institution
-        'lead_auditor': facility_audit.lead_auditor, # Add Lead Auditor
+        'categories': [summary.heading for summary in summaries] if summaries else [],
+        'met_counts': [summary.met_count for summary in summaries] if summaries else [],
+        'partially_met_counts': [summary.partially_met_count for summary in summaries] if summaries else [],
+        'not_met_counts': [summary.not_met_count for summary in summaries] if summaries else [],
     }
-    # Add category data for chart
-    context['categories'] = [summary.heading for summary in summaries]
-    context['met_counts'] = [summary.met_count for summary in summaries]
-    context['partially_met_counts'] = [summary.partially_met_count for summary in summaries]
-    context['not_met_counts'] = [summary.not_met_count for summary in summaries]
-    return render(request, 'audit_summary.html', context)
 
+    return render(request, 'audit_summary.html', context)
 
 
 def audit_selection(request):

@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import FacilityAuditnew, IPCProgram, AuditSummary, AuditResponsenew, Opportunity
-
-admin.site.register(FacilityAuditnew)
-admin.site.register(AuditResponsenew)
-admin.site.register(AuditSummary)
+from .models import FacilityAuditnewfinal, IPCProgram, AuditSummaryfinal, AuditResponsenewfinal, Opportunity
+admin.site.register(FacilityAuditnewfinal)
+admin.site.register(AuditResponsenewfinal)
+admin.site.register(AuditSummaryfinal)
 admin.site.register(Opportunity)
 @admin.register(IPCProgram)
 class IPCProgramAdmin(admin.ModelAdmin):

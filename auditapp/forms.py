@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm
-from .models import FacilityAuditnew
-from auditapp.models import FacilityAuditnew
+from .models import FacilityAuditnewfinal
+from auditapp.models import FacilityAuditnewfinal
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -52,11 +52,11 @@ class SignUpForm(UserCreationForm):
 
 class FacilityAuditForm(forms.ModelForm):
     class Meta:
-        model = FacilityAuditnew
+        model = FacilityAuditnewfinal
         fields = [
             'governate', 'wilayat', 'facility_name',
             'head_of_institution', 'rationale', 'audit_date',
-            'lead_auditor', 'auditors', 'areas_covered'
+            'lead_auditor', 'auditors', 'areas_covered',
         ]
 
 
